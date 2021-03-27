@@ -1,4 +1,4 @@
-inherit_from: .rubocop_todo.yml
+# inherit_from: .rubocop_todo.yml
 
 require: rubocop-rspec
 
@@ -67,15 +67,13 @@ Style/SymbolArray:
 
 # RSpec
 RSpec/ExampleLength:
-  Exclude:
-    - 'spec/mini_computer/stack_table_spec.rb'
-    - 'spec/mini_computer/stack_spec.rb'
+  Enabled: false
+
+RSpec/MultipleExpectations:
+  Enabled: false
 
 Style/Documentation:
   Exclude:
     - 'spec/**/*'
     - 'test/**/*'
-
-RSpec/NestedGroups:
-  Max: 4
 
