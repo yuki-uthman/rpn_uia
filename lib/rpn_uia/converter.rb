@@ -8,6 +8,8 @@ module RpnUIA
   # a class to convert infix to postfix one step at a time
   class Converter
     include Traceable
+    define_trace :state
+
     attr_reader :input, :output, :ops
 
     def initialize
@@ -29,7 +31,7 @@ module RpnUIA
     def next
       return false if @input.empty? && @ops.empty?
 
-      save_trace
+      save_state
       if @input.empty?
         @output.push @ops.pop
       else
@@ -48,10 +50,10 @@ module RpnUIA
     end
 
     def back
-      if any_trace?
+      if any_previous_state?
         false
       else
-        self.state = pop_trace
+        restore_state
         true
       end
     end
@@ -66,17 +68,20 @@ module RpnUIA
       [@input.dup, @ops.dup, @output.dup]
     end
 
-    def trace
-      state
-    end
-
     private
 
     def reset
       @input = []
       @output = []
       @ops = []
-      clear_trace
+      clear_state
     end
   end
+
+  con = Converter.new
+  # pp Converter.singleton_class.ancestors
+  pp Converter.singleton_methods
+  pp Converter.instance_variable_get("@to_be_traced")
+  pp con.instance_variables
+  pp Converter.class_variables
 end
