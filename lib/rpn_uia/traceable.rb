@@ -1,25 +1,25 @@
 module RpnUIA
   # Add functionality to save and restore states
-  # Must implement state
+  # Must implement trace
   module Traceable
-    def trace
-      @trace ||= []
+    def stack
+      @stack ||= []
     end
 
     def clear_trace
-      trace.clear
+      stack.clear
     end
 
     def save_trace
-      trace.push state
+      stack.push trace
     end
 
-    def restore_trace
-      trace.pop
+    def pop_trace
+      stack.pop
     end
 
     def any_trace?
-      trace.empty?
+      stack.empty?
     end
   end
 end

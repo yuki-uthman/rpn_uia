@@ -51,7 +51,7 @@ module RpnUIA
       if any_trace?
         false
       else
-        self.state = restore_trace
+        self.state = pop_trace
         true
       end
     end
@@ -64,6 +64,10 @@ module RpnUIA
 
     def state
       [@input.dup, @ops.dup, @output.dup]
+    end
+
+    def trace
+      state
     end
 
     private
