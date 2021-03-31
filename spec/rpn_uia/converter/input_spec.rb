@@ -8,7 +8,6 @@ RSpec.describe RpnUIA::Converter, "#input=" do
     expect(conv.input).to eq []
     expect(conv.output).to eq []
     expect(conv.ops).to eq []
-    expect(conv.history).to eq []
   end
 
   context "with Array" do

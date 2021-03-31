@@ -6,5 +6,4 @@ RSpec.describe RpnUIA::Converter, "#new" do
   it { is_expected.to have_attributes(input: []) }
   it { is_expected.to have_attributes(output: []) }
   it { is_expected.to have_attributes(ops: []) }
-  it { is_expected.to have_attributes(history: []) }
 end

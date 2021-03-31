@@ -2,17 +2,18 @@
 
 require_relative "operator"
 require_relative "tokenizer"
+require_relative "traceable"
 
 module RpnUIA
   # a class to convert infix to postfix one step at a time
   class Converter
-    attr_reader :input, :output, :ops, :history
+    include Traceable
+    attr_reader :input, :output, :ops
 
     def initialize
       @input = []
       @ops = []
       @output = []
-      @history = []
     end
 
     def input=(expression)
@@ -28,7 +29,7 @@ module RpnUIA
     def next
       return false if @input.empty? && @ops.empty?
 
-      save
+      save_trace
       if @input.empty?
         @output.push @ops.pop
       else
@@ -47,10 +48,10 @@ module RpnUIA
     end
 
     def back
-      if @history.empty?
+      if any_trace?
         false
       else
-        self.state = @history.pop
+        self.state = restore_trace
         true
       end
     end
@@ -71,11 +72,7 @@ module RpnUIA
       @input = []
       @output = []
       @ops = []
-      @history = []
-    end
-
-    def save
-      @history.push state
+      clear_trace
     end
   end
 end
