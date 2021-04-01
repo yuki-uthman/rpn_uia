@@ -1,12 +1,8 @@
 module RpnUIA
   #
-  # Add functionality to save and restore states
+  # Add functionality to save and restore anything
   #
   module Traceable
-    def self.included(base)
-      base.extend Accessor
-    end
-
     # define what is to be traced
     #
     # define_trace(method/variable)
@@ -14,48 +10,47 @@ module RpnUIA
     # eg.
     # define_trace :state
     #
-    module Accessor
-      def define_trace(value)
-        @trace = value
+    def define_trace(*values)
+      values.each do |value|
+        define_method(value) do
+          instance_variable_get("@#{value}")
+        end
 
-        alias_method "clear_#{value}",         :clear
-        alias_method "save_#{value}",          :save
-        alias_method "pop_#{value}",           :pop
-        alias_method "restore_#{value}",       :restore
-        alias_method "any_previous_#{value}?", :any_trace?
+        define_method("#{value}=") do |param|
+          instance_variable_set("@#{value}", param)
+        end
+
+        define_method("#{value}_traces") do
+          instance_eval <<~HERE, __FILE__, __LINE__ + 1
+            @#{value}_traces ||= []
+          HERE
+        end
+
+        define_method("save_#{value}") do
+          instance_eval <<~HERE, __FILE__, __LINE__ + 1
+            #{value}_traces << #{value}
+          HERE
+        end
+
+        define_method("clear_#{value}") do
+          instance_eval <<~HERE, __FILE__, __LINE__ + 1
+            #{value}_traces.clear
+          HERE
+        end
+
+        define_method("any_previous_#{value}?") do
+          instance_eval <<~HERE, __FILE__, __LINE__ + 1
+            !#{value}_traces.empty?
+          HERE
+        end
+
+        define_method("restore_previous_#{value}") do
+          instance_eval <<~HERE, __FILE__, __LINE__ + 1
+            raise NoTraceFoundError if #{value}_traces.empty?
+            self.#{value} = #{value}_traces.pop
+          HERE
+        end
       end
-
-      def trace
-        @trace
-      end
-    end
-
-    def traces
-      @traces ||= []
-    end
-
-    def clear
-      traces.clear
-    end
-
-    def save
-      traces.push __send__(self.class.trace)
-    end
-
-    def pop
-      traces.pop
-    end
-
-    def restore
-      __send__("#{self.class.trace}=", pop)
-    end
-
-    def any_trace?
-      traces.empty?
-    end
-
-    def show
-      traces.dup
     end
   end
 end
