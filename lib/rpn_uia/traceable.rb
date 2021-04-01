@@ -8,13 +8,13 @@ module RpnUIA
     # define_trace(method/variable)
     #
     # eg.
-    # define_trace :state
+    # define_traces :state, :feeling
     #
-    def define_trace(*values)
+    def define_traces(*values)
       values.each do |value|
         attr_accessor value.to_sym
 
-        define_traces value
+        define_trace  value
         define_save   value
         define_clear  value
         define_restore value
@@ -24,10 +24,10 @@ module RpnUIA
 
     private
 
-    def define_traces(value)
-      define_method("#{value}_traces") do
+    def define_trace(value)
+      define_method("#{value}_trace") do
         instance_eval <<~HERE, __FILE__, __LINE__ + 1
-          @#{value}_traces ||= []
+          @#{value}_trace ||= []
         HERE
       end
     end
@@ -35,7 +35,7 @@ module RpnUIA
     def define_save(value)
       define_method("save_#{value}") do
         instance_eval <<~HERE, __FILE__, __LINE__ + 1
-          #{value}_traces << #{value}
+          #{value}_trace << #{value}
         HERE
       end
     end
@@ -43,7 +43,7 @@ module RpnUIA
     def define_clear(value)
       define_method("clear_#{value}") do
         instance_eval <<~HERE, __FILE__, __LINE__ + 1
-          #{value}_traces.clear
+          #{value}_trace.clear
         HERE
       end
     end
@@ -51,7 +51,7 @@ module RpnUIA
     def define_previous(value)
       define_method("any_previous_#{value}?") do
         instance_eval <<~HERE, __FILE__, __LINE__ + 1
-          !#{value}_traces.empty?
+          !#{value}_trace.empty?
         HERE
       end
     end
@@ -59,8 +59,8 @@ module RpnUIA
     def define_restore(value)
       define_method("restore_previous_#{value}") do
         instance_eval <<~HERE, __FILE__, __LINE__ + 1
-          raise NoTraceFoundError if #{value}_traces.empty?
-          self.#{value} = #{value}_traces.pop
+          raise NoTraceFoundError if #{value}_trace.empty?
+          self.#{value} = #{value}_trace.pop
         HERE
       end
     end
