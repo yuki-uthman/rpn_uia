@@ -11,10 +11,10 @@ RSpec.describe RpnUIA::Traceable, "#restore_previous_state" do
       dummy.save_state
     end
 
-    it "pops the traces" do
-      expect(dummy.state_traces).to eq ["Running"]
+    it "pops the trace" do
+      expect(dummy.state_trace).to eq ["Running"]
       dummy.restore_previous_state
-      expect(dummy.state_traces).to eq []
+      expect(dummy.state_trace).to eq []
     end
 
     it "replaces the current state" do

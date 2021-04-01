@@ -8,7 +8,7 @@ module RpnUIA
   # a class to convert infix to postfix one step at a time
   class Converter
     extend Traceable
-    define_trace :state
+    define_traces :state
 
     attr_reader :input, :output, :ops
 

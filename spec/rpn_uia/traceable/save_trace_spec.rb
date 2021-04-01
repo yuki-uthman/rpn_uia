@@ -9,11 +9,11 @@ RSpec.describe RpnUIA::Traceable, "#save_trace" do
     it "saves its state" do
       dummy.state = "Running"
       dummy.save_state
-      expect(dummy.state_traces).to eq ["Running"]
+      expect(dummy.state_trace).to eq ["Running"]
 
       dummy.state = "Sleeping"
       dummy.save_state
-      expect(dummy.state_traces).to eq %w[Running Sleeping]
+      expect(dummy.state_trace).to eq %w[Running Sleeping]
     end
   end
 
@@ -27,8 +27,8 @@ RSpec.describe RpnUIA::Traceable, "#save_trace" do
       subject.feeling = "Happy"
       subject.save_feeling
 
-      expect(subject.state_traces).to eq ["Running"]
-      expect(subject.feeling_traces).to eq ["Happy"]
+      expect(subject.state_trace).to eq ["Running"]
+      expect(subject.feeling_trace).to eq ["Happy"]
     end
   end
 end

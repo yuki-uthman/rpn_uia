@@ -10,7 +10,7 @@ RSpec.describe RpnUIA::Traceable, "#clear" do
       dummy.state = "Running"
       dummy.save_state
       dummy.clear_state
-      expect(dummy.state_traces).to eq []
+      expect(dummy.state_trace).to eq []
     end
   end
 
@@ -22,7 +22,7 @@ RSpec.describe RpnUIA::Traceable, "#clear" do
       dummy.save_state
 
       dummy.clear_state
-      expect(dummy.state_traces).to eq []
+      expect(dummy.state_trace).to eq []
     end
   end
 end
