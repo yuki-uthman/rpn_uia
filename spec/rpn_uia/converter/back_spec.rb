@@ -27,7 +27,6 @@ RSpec.describe RpnUIA::Converter, "#back" do
 
     it "restores the previous state" do
       expect(conv.state).to eq [[1, 2], [], [3]]
-
       conv.back
       expect(conv.state).to eq [[1, 2, 3], [], []]
     end

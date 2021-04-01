@@ -7,7 +7,7 @@ require_relative "traceable"
 module RpnUIA
   # a class to convert infix to postfix one step at a time
   class Converter
-    include Traceable
+    extend Traceable
     define_trace :state
 
     attr_reader :input, :output, :ops
@@ -51,10 +51,10 @@ module RpnUIA
 
     def back
       if any_previous_state?
-        false
-      else
-        restore_state
+        restore_previous_state
         true
+      else
+        false
       end
     end
 
