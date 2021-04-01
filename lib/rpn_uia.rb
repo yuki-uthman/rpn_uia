@@ -9,5 +9,6 @@ require_relative "rpn_uia/traceable"
 
 module RpnUIA
   class Error < StandardError; end
+  class NoTraceFoundError < StandardError; end
   # Your code goes here...
 end
