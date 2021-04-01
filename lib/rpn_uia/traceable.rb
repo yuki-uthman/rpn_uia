@@ -12,13 +12,7 @@ module RpnUIA
     #
     def define_trace(*values)
       values.each do |value|
-        define_method(value) do
-          instance_variable_get("@#{value}")
-        end
-
-        define_method("#{value}=") do |param|
-          instance_variable_set("@#{value}", param)
-        end
+        attr_accessor value.to_sym
 
         define_method("#{value}_traces") do
           instance_eval <<~HERE, __FILE__, __LINE__ + 1
