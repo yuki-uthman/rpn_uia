@@ -3,9 +3,12 @@ module RpnUIA
   # Add functionality to save and restore anything
   #
   module Traceable
-    # define what is to be traced
+    # define the name of the variables to be traced
     #
-    # define_trace(method/variable)
+    # instance variables will be created
+    #
+    # can override the behaviour from the class
+    # if looking to save output of a method
     #
     # eg.
     # define_traces :state, :feeling
@@ -19,6 +22,20 @@ module RpnUIA
         define_clear  value
         define_restore value
         define_previous value
+      end
+
+      define_method("traces") do
+        instance_exec(values) do
+          @traces = values
+        end
+      end
+
+      define_method("save_all") do
+        traces.each do |trace|
+          instance_eval <<~HERE, __FILE__, __LINE__ + 1
+            save_#{trace}
+          HERE
+        end
       end
     end
 
