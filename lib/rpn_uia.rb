@@ -6,9 +6,11 @@ require_relative "rpn_uia/tokenizer"
 require_relative "rpn_uia/converter"
 require_relative "rpn_uia/operator"
 require_relative "rpn_uia/traceable"
+require_relative "rpn_uia/visualizer"
 
 module RpnUIA
   class Error < StandardError; end
+
   class NoTraceFoundError < StandardError; end
   # Your code goes here...
 end
