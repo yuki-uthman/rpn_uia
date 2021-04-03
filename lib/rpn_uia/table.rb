@@ -56,7 +56,7 @@ module RpnUIA
       @columns&.max_by(&:size)
     end
 
-    # Only set the height if it is longer than the columns
+    # This will only set the height if it is longer than the columns
     #
     # @param [Integer] value
     #
