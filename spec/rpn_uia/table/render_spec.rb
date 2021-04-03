@@ -84,12 +84,12 @@ RSpec.describe RpnUIA::Table, "#render" do
 
   context "when there are many columns" do
     let(:columns) { [[3, 8, 1, 5, 6], ["+", "*"], [30]] }
-    let(:headers) { %w[Infix Ops Output] }
+    let(:headers) { %w[Input Ops Output] }
 
     it "renders columns side by side" do
       expected = <<~OUTPUT.rstrip
         ┌───────┬─────┬────────┐
-        │ Infix │ Ops │ Output │
+        │ Input │ Ops │ Output │
         ├───────┼─────┼────────┤
         │   6   │     │        │
         │   5   │     │        │
@@ -105,7 +105,7 @@ RSpec.describe RpnUIA::Table, "#render" do
       table.height = 6
       expected = <<~OUTPUT.rstrip
         ┌───────┬─────┬────────┐
-        │ Infix │ Ops │ Output │
+        │ Input │ Ops │ Output │
         ├───────┼─────┼────────┤
         │       │     │        │
         │   6   │     │        │
