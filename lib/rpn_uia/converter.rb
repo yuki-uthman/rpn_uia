@@ -12,10 +12,22 @@ module RpnUIA
 
     attr_reader :input, :output, :ops
 
-    def initialize
-      @input = []
+    def initialize(input: nil)
+      if input.nil?
+        @input = []
+      else
+        self.input = input
+      end
       @ops = []
       @output = []
+    end
+
+    def headers
+      %w[Input Ops Output]
+    end
+
+    def columns
+      state
     end
 
     def input=(expression)
@@ -77,11 +89,4 @@ module RpnUIA
       clear_state
     end
   end
-
-  con = Converter.new
-  # pp Converter.singleton_class.ancestors
-  pp Converter.singleton_methods
-  pp Converter.instance_variable_get("@to_be_traced")
-  pp con.instance_variables
-  pp Converter.class_variables
 end
