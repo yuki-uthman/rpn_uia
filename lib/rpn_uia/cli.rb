@@ -13,6 +13,10 @@ module RpnUIA
   # iterator object has to repond to #next & #back
   #
   class CLI
+    def self.run
+      CLI.new.run
+    end
+
     def initialize(iterator: Converter.new)
       @visualizer = Visualizer.new
       @iterator = iterator
