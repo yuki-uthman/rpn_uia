@@ -7,6 +7,7 @@ require_relative "rpn_uia/converter"
 require_relative "rpn_uia/operator"
 require_relative "rpn_uia/traceable"
 require_relative "rpn_uia/visualizer"
+require_relative "rpn_uia/cli"
 
 module RpnUIA
   class Error < StandardError; end
