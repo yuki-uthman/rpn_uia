@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
 RSpec.describe RpnUIA::Table, "#height" do
-  let(:table) {
+  let(:table) do
     described_class.new columns: columns
-  }
+  end
+
   let(:columns) { [%w[1 2 3], %w[1 2 3 4 5]] }
 
   context "when height is not set explicitly" do
