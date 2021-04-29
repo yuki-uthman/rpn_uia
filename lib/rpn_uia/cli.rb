@@ -5,6 +5,7 @@ require "pastel"
 
 require_relative "converter"
 require_relative "visualizer"
+require_relative "table"
 
 module RpnUIA
   # Command line interface helper
@@ -47,6 +48,7 @@ module RpnUIA
           end
 
           puts
+          display_result(input, @iterator.output.to_a.join(" "))
           puts
         end
       end
@@ -55,6 +57,11 @@ module RpnUIA
     def display(height: nil)
       system("clear")
       puts @visualizer.visualize height: height
+    end
+
+    def display_result(input, result)
+      table = Table.new headers: %w[Infix Postfix], columns: [[input], [result]]
+      puts table.render
     end
   end
 end
