@@ -64,7 +64,6 @@ RSpec.describe RpnUIA::Calculator, "#next" do
 
       subject.next
       expect(subject.state).to eq [[], [], ["8 * 3 = 24", "4 + 24 = 28"]]
-      expect(subject.result).to eq 28
 
       subject.next
       expect(subject.state).to eq [[], [28], ["8 * 3 = 24", "4 + 24 = 28"]]

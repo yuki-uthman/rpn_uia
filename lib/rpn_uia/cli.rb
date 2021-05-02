@@ -22,7 +22,7 @@ module RpnUIA
   # #headers
   #
   # for displaying the result
-  # #output
+  # #result
   #
   class CLI
     def self.run(title:, iterator:)
@@ -71,7 +71,7 @@ module RpnUIA
           end
 
           puts
-          display_result(input, @iterator.output.to_a.join(" "))
+          display_result(input, @iterator.result)
           puts
 
           continue_or_quit = prompt

@@ -81,6 +81,10 @@ module RpnUIA
       [@input.dup, @ops.dup, @output.dup]
     end
 
+    def result
+      @output.to_a.join(" ")
+    end
+
     private
 
     def reset

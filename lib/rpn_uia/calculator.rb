@@ -8,9 +8,9 @@ module RpnUIA
   # a class to convert infix to postfix one step at a time
   class Calculator
     extend Traceable
-    define_traces :state, :result
+    define_traces :state, :expresion_result
 
-    attr_reader :input, :numbers, :expression, :result, :input_type
+    attr_reader :input, :numbers, :expression, :expresion_result, :input_type
 
     def initialize(input: nil)
       @input_type = "postfix"
@@ -42,14 +42,14 @@ module RpnUIA
     end
 
     def next
-      return false if input.empty? && !@result
+      return false if input.empty? && !@expresion_result
 
       save_state
-      save_result
+      save_expresion_result
 
-      if @result
-        numbers.push @result
-        @result = false
+      if @expresion_result
+        numbers.push @expresion_result
+        @expresion_result = false
         return true
       end
 
@@ -61,9 +61,9 @@ module RpnUIA
         second = numbers.pop
         operator = input.pop
 
-        result = calculate(second, operator, first)
-        @result = result
-        expression.push "#{second} #{operator} #{first} = #{result}"
+        expresion_result = calculate(second, operator, first)
+        @expresion_result = expresion_result
+        expression.push "#{second} #{operator} #{first} = #{expresion_result}"
 
       end
     end
@@ -71,7 +71,7 @@ module RpnUIA
     def back
       if any_previous_state?
         restore_previous_state
-        restore_previous_result
+        restore_previous_expresion_result
         true
       else
         false
@@ -88,8 +88,8 @@ module RpnUIA
       [@input.dup, @numbers.dup, @expression.dup]
     end
 
-    def output
-      @numbers
+    def result
+      @numbers.first
     end
 
     private
