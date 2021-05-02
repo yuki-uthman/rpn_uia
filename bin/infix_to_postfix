@@ -1,0 +1,9 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require "bundler/setup"
+require "rpn_uia/cli"
+require "rpn_uia/converter"
+
+RpnUIA::CLI.run title: "Infix to Postfix Converter",
+                iterator: RpnUIA::Converter.new
