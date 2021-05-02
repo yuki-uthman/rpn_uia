@@ -3,22 +3,32 @@
 require "tty-prompt"
 require "pastel"
 
-require_relative "converter"
-require_relative "visualizer"
 require_relative "table"
 
 module RpnUIA
   # Command line interface helper
   #
-  # iterator object has to repond to #next & #back
+  # iterator object must respond to:
+  #
+  # for move its state back and forth
+  # #next
+  # #back
+  #
+  # for table rendering
+  # #columns
+  # #headers
+  #
+  # for displaying the result
+  # #output
   #
   class CLI
-    def self.run
-      CLI.new.run
+    def self.run(title:, iterator:)
+      CLI.new(title: title, iterator: iterator).run
     end
 
-    def initialize(iterator: Converter.new)
-      @visualizer = Visualizer.new
+    def initialize(title:, iterator:)
+      @title = "# #{title} #"
+      @table = Table.new
       @iterator = iterator
     end
 
@@ -27,44 +37,69 @@ module RpnUIA
 
       catch :shutdown do
         loop do
-          input = prompt.ask("Please input infix expression ( press Q to quit )",
-                             required: true)
+          clear
+          display_title
+          input = prompt
+                  .ask("Please input appropriate expression ( press Q to quit )",
+                       required: true)
           break if input.downcase == "q"
 
           @iterator.input = input
-          @visualizer.object = @iterator
 
-          display
+          clear
+          display_title
+          display_table
 
           loop do
             next_or_back = prompt.select("Next/Back or Quit",
                                          %w[next back quit])
             case next_or_back
             when "next"
-              done = @visualizer.next
+              done = @iterator.next
               break unless done
             when "back"
-              @visualizer.back
+              @iterator.back
             when "quit"
               throw :shutdown
             end
-            display
+            clear
+            display_title
+            display_table
           end
 
           puts
           display_result(input, @iterator.output.to_a.join(" "))
           puts
+
+          continue_or_quit = prompt
+                             .select("Continue or Quit", %w[continue quit])
+
+          case continue_or_quit
+          when "continue"
+            next
+          when "quit"
+            throw :shutdown
+          end
         end
       end
     end
 
-    def display(height: nil)
+    def clear
       system("clear")
-      puts @visualizer.visualize height: height
+    end
+
+    def display_title
+      puts @title
+    end
+
+    def display_table
+      @table.headers = @iterator.headers
+      @table.columns = @iterator.columns
+      puts @table.render
     end
 
     def display_result(input, result)
-      table = Table.new headers: %w[Infix Postfix], columns: [[input], [result]]
+      table = Table.new headers: %w[Input Result], columns: [[input], [result]]
       puts table.render
     end
   end
