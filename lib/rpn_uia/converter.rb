@@ -10,9 +10,10 @@ module RpnUIA
     extend Traceable
     define_traces :state
 
-    attr_reader :input, :output, :ops
+    attr_reader :input, :output, :ops, :input_type
 
     def initialize(input: nil)
+      @input_type = "infix"
       if input.nil?
         @input = []
       else

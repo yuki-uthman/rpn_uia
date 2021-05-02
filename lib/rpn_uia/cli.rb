@@ -10,6 +10,9 @@ module RpnUIA
   #
   # iterator object must respond to:
   #
+  # for informing the user for appropriate expression
+  # #input_type
+  #
   # for move its state back and forth
   # #next
   # #back
@@ -40,7 +43,7 @@ module RpnUIA
           clear
           display_title
           input = prompt
-                  .ask("Please input appropriate expression ( press Q to quit )",
+                  .ask("Please input #{@iterator.input_type} expression ( press Q to quit )",
                        required: true)
           break if input.downcase == "q"
 
