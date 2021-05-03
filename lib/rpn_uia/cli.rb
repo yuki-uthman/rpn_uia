@@ -88,7 +88,11 @@ module RpnUIA
     end
 
     def clear
-      system("clear")
+      if RUBY_PLATFORM =~ /win32|win64|\.NET|windows|cygwin|mingw32/i
+        system("cls")
+      else
+        system("clear")
+      end
     end
 
     def display_title
