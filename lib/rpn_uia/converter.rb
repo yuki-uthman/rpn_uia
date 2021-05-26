@@ -35,7 +35,7 @@ module RpnUIA
       reset
       case expression
       when String
-        @input = Tokenizer.tokenize(expression)
+        @input = Tokenizer.tokenize(expression).reverse
       when Array
         @input = expression
       end

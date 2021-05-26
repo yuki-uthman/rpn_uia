@@ -22,9 +22,9 @@ RSpec.describe RpnUIA::Converter, "#input=" do
   context "with String" do
     let(:input) { "1 + 2 * 3" }
 
-    it "tokenizes into array" do
+    it "tokenizes into array and reverses the order" do
       conv.input = "1 + 2 * 3"
-      expect(conv.input).to eq [1, :+, 2, :*, 3]
+      expect(conv.input).to eq [3, :*, 2, :+, 1]
     end
   end
 end
